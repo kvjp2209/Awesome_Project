@@ -13,17 +13,14 @@ import {
 
 
 
-const LoginScreen = ({ navigation }) => {
+const ForgotPasswordScreen = ({ navigation }) => {
     const [userEmail, setUserEmail] = useState('');
-    const [userPassword, setUserPassword] = useState('');
-    const [loading, setLoading] = useState(false);
     const [errortext, setErrortext] = useState('');
-    const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
     const passwordInputRef = createRef();
 
     const handleForgotPassword = () => {
-        navigation.navigate('ForgotPasswordScreen');
+        props.navigation.navigate('ForgotPasswordScreen');
     };
 
     const handleSubmitPress = () => {
@@ -32,46 +29,7 @@ const LoginScreen = ({ navigation }) => {
             alert('Please fill Email');
             return;
         }
-        if (!userPassword) {
-            alert('Please fill Password');
-            return;
-        }
-        setLoading(true);
-
-        // Place your authentication logic here
-
-        setIsLoginSuccess(true);
-        console.log('Registration Successful. Please Login to proceed');
     };
-
-    if (isLoginSuccess) {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    backgroundColor: '#307ecc',
-                    justifyContent: 'center',
-                }}>
-                <Image
-                    source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/Success.png')}
-                    style={{
-                        height: 150,
-                        resizeMode: 'contain',
-                        alignSelf: 'center'
-                    }}
-                />
-                <Text style={styles.successTextStyle}>
-                    Login Successful
-                </Text>
-                <TouchableOpacity
-                    style={styles.buttonStyle}
-                    activeOpacity={0.5}
-                    onPress={() => navigation.navigate('MainTabs')}>
-                    <Text style={styles.buttonTextStyle}>Home</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
 
     return (
         <View style={styles.mainBody}>
@@ -85,7 +43,7 @@ const LoginScreen = ({ navigation }) => {
                 <View>
                     <KeyboardAvoidingView enabled>
                         <Text style={{ fontSize: 30, fontWeight: 'bold', textAlign: 'left', paddingLeft: 35, color: '#F6F6F6', paddingTop: 35, }}>
-                            Login
+                            Forgot Password
                         </Text>
                         <View style={styles.SectionStyle}>
                             <TextInput
@@ -103,37 +61,15 @@ const LoginScreen = ({ navigation }) => {
                                 blurOnSubmit={false}
                             />
                         </View>
-                        <View style={styles.SectionStyle}>
-                            <TextInput
-                                style={styles.inputStyle}
-                                onChangeText={UserPassword =>
-                                    setUserPassword(UserPassword)
-                                }
-                                placeholder="Enter Password" //12345
-                                placeholderTextColor="#8b9cb5"
-                                keyboardType="default"
-                                ref={passwordInputRef}
-                                onSubmitEditing={Keyboard.dismiss}
-                                blurOnSubmit={false}
-                                secureTextEntry={true}
-                                underlineColorAndroid="#f000"
-                                returnKeyType="next"
-                            />
-                        </View>
                         {errortext != '' ? (
                             <Text style={styles.errorTextStyle}>{errortext}</Text>
                         ) : null}
-                        <TouchableOpacity
-                            onPress={handleForgotPassword}
-                            style={styles.forgotPassStyle}
-                        >
-                            <Text style={styles.forgotPassStyle}>Forgot your password?</Text>
-                        </TouchableOpacity>
+
                         <TouchableOpacity
                             style={styles.buttonStyle}
                             activeOpacity={0.5}
                             onPress={handleSubmitPress}>
-                            <Text style={styles.buttonTextStyle}>LOGIN</Text>
+                            <Text style={styles.buttonTextStyle}>SUBMIT</Text>
                         </TouchableOpacity>
                         <Text
                             style={styles.registerTextStyle}
@@ -147,7 +83,7 @@ const LoginScreen = ({ navigation }) => {
     );
 };
 
-export default LoginScreen;
+export default ForgotPasswordScreen;
 
 const styles = StyleSheet.create({
     mainBody: {
@@ -208,11 +144,5 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'right',
         paddingRight: 15,
-    },
-    successTextStyle: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 18,
-        padding: 30,
-    },
+    }
 });

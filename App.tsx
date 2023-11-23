@@ -3,19 +3,13 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import LoginScreen from './src/screens/LoginScreen/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen/RegisterScreen';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen/ForgotPasswordScreen';
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
+import HomeScreen from './src/screens/HomeScreen/HomeScreen';
+import ProductDetailsScreen from './src/screens/ProductDetailsScreen/ProductDetailsScreen';
 
 function ShopScreen() {
   return (
@@ -44,7 +38,7 @@ function FavoritesScreen() {
 function ProfileScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile!</Text>
+      <Text>Favorites!</Text>
     </View>
   );
 }
@@ -56,33 +50,19 @@ const Tab = createBottomTabNavigator();
 function MainTabs() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-  
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Shop') {
-            iconName = 'cart';
-          } else if (route.name === 'Bag') {
-            iconName = 'briefcase';
-          } else if (route.name === 'Favorites') {
-            iconName = 'heart';
-          } else if (route.name === 'Profile') {
-            iconName = 'person';
-          }
-  
-          return <Ionicons name={iconName ?? ''} size={size} color={color} />;
-        },
-      })}
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarActiveTintColor: '#e91e63',
+      }}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
       />
@@ -92,7 +72,7 @@ function MainTabs() {
         options={{
           tabBarLabel: 'Shop',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="cart" size={size} color={color} />
+            <MaterialCommunityIcons name="cart" color={color} size={size} />
           ),
         }}
       />
@@ -102,7 +82,7 @@ function MainTabs() {
         options={{
           tabBarLabel: 'Bag',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="briefcase" size={size} color={color} />
+            <MaterialCommunityIcons name="briefcase" color={color} size={size} />
           ),
         }}
       />
@@ -112,7 +92,7 @@ function MainTabs() {
         options={{
           tabBarLabel: 'Favorites',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart" size={size} color={color} />
+            <MaterialCommunityIcons name="heart" color={color} size={size} />
           ),
         }}
       />
@@ -122,7 +102,7 @@ function MainTabs() {
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+            <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
       />
@@ -158,6 +138,20 @@ function App() {
           component={RegisterScreen}
           options={{
             title: 'Register',
+            headerStyle: {
+              backgroundColor: '#307ecc',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <Stack.Screen
+          name="ProductDetailsScreen"
+          component={ProductDetailsScreen}
+          options={{
+            title: 'Product Details',
             headerStyle: {
               backgroundColor: '#307ecc',
             },

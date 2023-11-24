@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {View, Text} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import LoginScreen from './src/screens/LoginScreen/LoginScreen';
@@ -13,7 +13,7 @@ import ProductDetailsScreen from './src/screens/ProductDetailsScreen/ProductDeta
 
 function ShopScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Shop!</Text>
     </View>
   );
@@ -21,7 +21,7 @@ function ShopScreen() {
 
 function BagScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Bag!</Text>
     </View>
   );
@@ -29,7 +29,7 @@ function BagScreen() {
 
 function FavoritesScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Favorites!</Text>
     </View>
   );
@@ -37,7 +37,7 @@ function FavoritesScreen() {
 
 function ProfileScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Favorites!</Text>
     </View>
   );
@@ -46,22 +46,20 @@ function ProfileScreen() {
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
 function MainTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
-      }}
-    >
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           headerShown: false,
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
         }}
@@ -71,7 +69,7 @@ function MainTabs() {
         component={ShopScreen}
         options={{
           tabBarLabel: 'Shop',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="cart" color={color} size={size} />
           ),
         }}
@@ -81,8 +79,12 @@ function MainTabs() {
         component={BagScreen}
         options={{
           tabBarLabel: 'Bag',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="briefcase" color={color} size={size} />
+          tabBarIcon: ({color, size}) => (
+            <MaterialCommunityIcons
+              name="briefcase"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -91,7 +93,7 @@ function MainTabs() {
         component={FavoritesScreen}
         options={{
           tabBarLabel: 'Favorites',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="heart" color={color} size={size} />
           ),
         }}
@@ -101,7 +103,7 @@ function MainTabs() {
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
         }}
@@ -117,7 +119,7 @@ function App() {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="ForgotPasswordScreen"
@@ -153,16 +155,21 @@ function App() {
           options={{
             title: 'Product Details',
             headerStyle: {
-              backgroundColor: '#307ecc',
+              backgroundColor: '#1E1F28',
             },
             headerTintColor: '#fff',
+
             headerTitleStyle: {
               fontWeight: 'bold',
             },
           }}
         />
 
-        <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

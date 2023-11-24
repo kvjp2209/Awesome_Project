@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -38,10 +39,11 @@ const saleClothesData = [
   },
 ];
 
-function HomeScreen({navigation}) {
+function HomeScreen() {
   const handleProductDetails = productId => {
     navigation.navigate('ProductDetailsScreen', {id: productId});
   };
+  const navigation = useNavigation();
 
   return (
     <ScrollView>
@@ -49,7 +51,6 @@ function HomeScreen({navigation}) {
         <Image
           source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/Main.png')}
           style={styles.bannerImageStyle}
-          resizeMode="cover"
         />
       </View>
 

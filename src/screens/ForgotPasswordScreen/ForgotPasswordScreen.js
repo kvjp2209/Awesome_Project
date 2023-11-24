@@ -18,7 +18,7 @@ const ForgotPasswordScreen = ({navigation}) => {
   const passwordInputRef = createRef();
 
   const handleForgotPassword = () => {
-    props.navigation.navigate('ForgotPasswordScreen');
+    navigation.navigate('ForgotPasswordScreen');
   };
 
   const handleSubmitPress = () => {

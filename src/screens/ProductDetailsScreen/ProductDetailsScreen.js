@@ -3,7 +3,7 @@ import {
   useNavigation,
   useScrollToTop,
 } from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -14,8 +14,12 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  TextInput,
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Feather';
+import {CartContext} from '../../Context/CartContext';
+
 const saleClothesData = [
   {
     id: 1,
@@ -47,6 +51,7 @@ const saleClothesData = [
 ];
 const productDetailsData = {
   1: {
+    id: 1,
     name: 'Dorothy Perkins',
     type: 'Evening Dress',
     price: 25,
@@ -57,6 +62,7 @@ const productDetailsData = {
       'Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.',
   },
   2: {
+    id: 2,
     name: 'Sitlly',
     type: 'Sport Dress',
     price: 50,
@@ -67,6 +73,7 @@ const productDetailsData = {
       'Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.',
   },
   3: {
+    id: 3,
     name: 'Just',
     type: 'Vess Dress',
     price: 40,
@@ -85,6 +92,14 @@ function ProductDetailsScreen({route}) {
   const {id} = route.params;
   const product = productDetailsData[id];
   const scrollViewRef = useRef(null);
+  const {addToCart} = useContext(CartContext);
+  const [quantity, setQuantity] = useState('1');
+
+  const handleAddToCart = () => {
+    const parsedQuantity = parseInt(quantity, 10);
+    addToCart(product, parsedQuantity);
+    toggleQuantityModal();
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('state', () => {
@@ -102,6 +117,7 @@ function ProductDetailsScreen({route}) {
 
   const [isSizeModalVisible, setIsSizeModalVisible] = useState(false);
   const [isColorModalVisible, setIsColorModalVisible] = useState(false);
+  const [isQuantityModalVisible, setIsQuantityModalVisible] = useState(false);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const navigation = useNavigation();
@@ -114,6 +130,10 @@ function ProductDetailsScreen({route}) {
     setIsColorModalVisible(!isColorModalVisible);
   };
 
+  const toggleQuantityModal = () => {
+    setIsQuantityModalVisible(!isQuantityModalVisible);
+  };
+
   const handleSizeSelection = size => {
     setSelectedSize(size);
     toggleSizeModal();
@@ -123,6 +143,7 @@ function ProductDetailsScreen({route}) {
     setSelectedColor(color);
     toggleColorModal();
   };
+
   const handleProductDetails = productId => {
     console.log('a');
     navigation.navigate('ProductDetailsScreen', {id: productId});
@@ -220,10 +241,36 @@ function ProductDetailsScreen({route}) {
           </View>
 
           <View style={{alignItems: 'center'}}>
-            <TouchableOpacity style={styles.addToCartButtonStyle}>
+            <TouchableOpacity
+              style={styles.addToCartButtonStyle}
+              onPress={toggleQuantityModal}>
               <Text style={styles.addToCartTextStyle}>ADD TO CART</Text>
             </TouchableOpacity>
           </View>
+          <Modal
+            visible={isQuantityModalVisible}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={toggleQuantityModal}>
+            <TouchableWithoutFeedback onPress={toggleQuantityModal}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Select Quantity</Text>
+                  <TextInput
+                    style={styles.quantityInput}
+                    value={quantity}
+                    onChangeText={setQuantity}
+                    keyboardType="numeric"
+                  />
+                  <TouchableOpacity
+                    onPress={handleAddToCart}
+                    style={styles.confirmButton}>
+                    <Text style={styles.confirmButtonText}>CONFIRM</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </Modal>
 
           <Modal
             visible={isSizeModalVisible}
@@ -394,15 +441,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: '#2A2C36',
     padding: 20,
     borderRadius: 10,
     width: '80%',
+    alignItems: 'center',
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: 'white',
   },
   sizeOption: {
     padding: 10,
@@ -515,5 +564,31 @@ const styles = StyleSheet.create({
   },
   saleClothesTextStyle: {
     color: '#F6F6F6',
+  },
+  quantityInput: {
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    marginBottom: 8,
+    height: 50,
+    fontSize: 20,
+    color: 'white',
+  },
+  confirmButton: {
+    width: 200,
+    height: 48,
+    flexShrink: 0,
+    borderRadius: 25,
+    backgroundColor: '#EF3651',
+    boxShadow: '0px 4px 8px 0px rgba(239, 54, 81, 0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  confirmButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

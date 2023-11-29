@@ -47,7 +47,7 @@ const LoginScreen = ({navigation}) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#307ecc',
+          backgroundColor: '#1E1F28',
           justifyContent: 'center',
         }}>
         <Image

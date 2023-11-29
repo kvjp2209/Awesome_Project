@@ -10,19 +10,13 @@ import RegisterScreen from './src/screens/RegisterScreen/RegisterScreen';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
 import ProductDetailsScreen from './src/screens/ProductDetailsScreen/ProductDetailsScreen';
+import CartScreen from './src/screens/CartScreen/CartScreen';
+import {CartProvider} from './src/Context/CartContext';
 
 function ShopScreen() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Shop!</Text>
-    </View>
-  );
-}
-
-function BagScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Bag!</Text>
     </View>
   );
 }
@@ -52,6 +46,12 @@ function MainTabs() {
       initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
+        tabBarStyle: {
+          backgroundColor: '#1E1F28',
+        },
+      }}
+      sceneContainerStyle={{
+        backgroundColor: '#1E1F28',
       }}>
       <Tab.Screen
         name="Home"
@@ -76,8 +76,9 @@ function MainTabs() {
       />
       <Tab.Screen
         name="Bag"
-        component={BagScreen}
+        component={CartScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Bag',
           tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
@@ -114,64 +115,66 @@ function MainTabs() {
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomeScreen">
-        <Stack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-          options={{
-            title: 'Forgot Password Screen',
-            headerStyle: {
-              backgroundColor: '#307ecc',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        />
-        <Stack.Screen
-          name="RegisterScreen"
-          component={RegisterScreen}
-          options={{
-            title: 'Register',
-            headerStyle: {
-              backgroundColor: '#307ecc',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        />
-        <Stack.Screen
-          name="ProductDetailsScreen"
-          component={ProductDetailsScreen}
-          options={{
-            title: 'Product Details',
-            headerStyle: {
-              backgroundColor: '#1E1F28',
-            },
-            headerTintColor: '#fff',
+    <CartProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="HomeScreen">
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForgotPasswordScreen"
+            component={ForgotPasswordScreen}
+            options={{
+              title: 'Forgot Password Screen',
+              headerStyle: {
+                backgroundColor: '#307ecc',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="RegisterScreen"
+            component={RegisterScreen}
+            options={{
+              title: 'Register',
+              headerStyle: {
+                backgroundColor: '#307ecc',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="ProductDetailsScreen"
+            component={ProductDetailsScreen}
+            options={{
+              title: 'Product Details',
+              headerStyle: {
+                backgroundColor: '#1E1F28',
+              },
+              headerTintColor: '#fff',
 
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        />
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+            }}
+          />
 
-        <Stack.Screen
-          name="MainTabs"
-          component={MainTabs}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
+            options={{headerShown: false}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CartProvider>
   );
 }
 

@@ -11,20 +11,13 @@ import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen/ForgotPassw
 import HomeScreen from './src/screens/HomeScreen/HomeScreen';
 import ProductDetailsScreen from './src/screens/ProductDetailsScreen/ProductDetailsScreen';
 import CartScreen from './src/screens/CartScreen/CartScreen';
+import MapScreen from './src/screens/MapScreen/MapScreen';
 import {CartProvider} from './src/Context/CartContext';
 
 function ShopScreen() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Shop!</Text>
-    </View>
-  );
-}
-
-function FavoritesScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Favorites!</Text>
     </View>
   );
 }
@@ -90,12 +83,12 @@ function MainTabs() {
         }}
       />
       <Tab.Screen
-        name="Favorites"
-        component={FavoritesScreen}
+        name="Map"
+        component={MapScreen}
         options={{
-          tabBarLabel: 'Favorites',
+          tabBarLabel: 'Map',
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="heart" color={color} size={size} />
+            <MaterialCommunityIcons name="map" color={color} size={size} />
           ),
         }}
       />

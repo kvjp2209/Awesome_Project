@@ -1,4 +1,5 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {
   View,
   Text,
@@ -19,14 +20,14 @@ const MyBagScreen = () => {
     {code: 'SALE30', discount: 30},
   ]);
 
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0); // Khởi tạo giá trị ban đầu của totalPrice
+
   const {cartItems, addToCart, removeFromCart, reduceFromCart} =
     useContext(CartContext);
   const [couponCode, setCouponCode] = useState('');
   const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [selectedCouponCode, setSelectedCouponCode] = useState('');
   const [isCouponApplied, setIsCouponApplied] = useState(false);
-  const [showCouponOptions, setShowCouponOptions] = useState(false);
-  const bottomSheetRef = useRef(null);
 
   const addQuantityToCart = item => {
     addToCart(item, 1);
@@ -58,49 +59,78 @@ const MyBagScreen = () => {
   };
 
   const handleCouponCodeChange = code => {
-    setCouponCode(code);
-    setSelectedCoupon(null);
+    setSelectedCouponCode(code);
+
+    // Kiểm tra xem đoạn văn bản có tương đương với một mã coupon trong danh sách không
+    const equivalentCoupon = couponList.find(
+      coupon => coupon.code.toLowerCase() === code.toLowerCase(),
+    );
+
+    if (equivalentCoupon) {
+      setSelectedCoupon(equivalentCoupon.code);
+    } else {
+      setSelectedCoupon(null);
+    }
   };
 
-  const applyCoupon = couponCode => {
+  const handleApplyCoupon = () => {
+    // Kiểm tra nếu coupon đã được áp dụng, không làm gì cả
+    if (isCouponApplied) {
+      return;
+    }
+
     const selectedCoupon = couponList.find(
-      coupon => coupon.code.toLowerCase() === couponCode.toLowerCase(),
+      coupon => coupon.code.toLowerCase() === selectedCouponCode.toLowerCase(),
     );
+
     if (selectedCoupon) {
       const discountedPrice =
         getTotalPrice() * (1 - selectedCoupon.discount / 100);
       setTotalPrice(discountedPrice.toFixed(2));
       setSelectedCoupon(selectedCoupon.code);
-      setIsCouponApplied(true);
+      setIsCouponApplied(true); // Đặt biến isCouponApplied thành true sau khi áp dụng coupon
     } else {
       setTotalPrice(getTotalPrice());
       setSelectedCoupon(null);
+    }
+  };
+
+  // Hàm xử lý khi huỷ áp dụng coupon
+  const handleCancelCoupon = () => {
+    setTotalPrice(getTotalPrice()); // Đặt lại giá trị tổng tiền về giá gốc
+    setSelectedCoupon(null); // Đặt lại mã coupon đã chọn về null
+    setIsCouponApplied(false); // Đặt lại trạng thái áp dụng coupon về false
+    setCouponCode(''); // Đặt lại giá trị trong TextInput về rỗng (nếu muốn)
+  };
+
+  const handleSelectCoupon = couponCode => {
+    const selectedCoupon = couponList.find(
+      coupon => coupon.code === couponCode,
+    );
+
+    if (selectedCoupon) {
+      setSelectedCouponCode(selectedCoupon.code); // Cập nhật mã coupon đã chọn vào state
+      setSelectedCoupon(selectedCoupon.code); // Cập nhật mã coupon đã chọn
+      // Cập nhật giá trị của TextInput mã coupon
+      setCouponCode(selectedCoupon.code);
     }
   };
 
   const handleApplyCouponFromInput = () => {
-    if (isCouponApplied) {
-      console.log('cancel');
-      setTotalPrice(getTotalPrice());
-      setSelectedCoupon(null);
-      setIsCouponApplied(false);
-      setCouponCode('');
-    } else {
-      console.log('applied');
-      applyCoupon(couponCode);
-    }
-  };
+    // Kiểm tra xem mã coupon trong TextInput có trùng với mã nào trong danh sách không
+    const couponFromInput = couponList.find(
+      coupon => coupon.code.toLowerCase() === couponCode.toLowerCase(),
+    );
 
-  const handleApplyCouponFromList = couponCode => {
-    if (isCouponApplied) {
-      console.log('cancel');
-      setTotalPrice(getTotalPrice());
-      setSelectedCoupon(null);
-      setIsCouponApplied(false);
-      setCouponCode('');
+    if (couponFromInput) {
+      const discountedPrice =
+        getTotalPrice() * (1 - couponFromInput.discount / 100);
+      setTotalPrice(discountedPrice.toFixed(2));
+      setSelectedCoupon(couponFromInput.code);
+      setIsCouponApplied(true); // Đặt biến isCouponApplied thành true sau khi áp dụng coupon
     } else {
-      console.log('applied');
-      applyCoupon(couponCode);
+      // Nếu không tìm thấy mã coupon, có thể hiển thị thông báo lỗi hoặc xử lý phù hợp
+      // ở đây tôi sẽ không thực hiện gì cả
     }
   };
 
@@ -126,25 +156,6 @@ const MyBagScreen = () => {
     </View>
   );
 
-  const renderCouponOptions = () => {
-    return (
-      <BottomSheetScrollView>
-        {couponList.map((coupon, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.couponOption,
-              selectedCoupon === coupon.code && styles.selectedCouponItem,
-            ]}
-            onPress={() => handleApplyCouponFromList(coupon.code)}>
-            <Text style={styles.couponCode}>{coupon.code}</Text>
-            <Text style={styles.couponDiscount}>{`-${coupon.discount}%`}</Text>
-          </TouchableOpacity>
-        ))}
-      </BottomSheetScrollView>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={{paddingHorizontal: 16, flex: 1}}>
@@ -159,11 +170,9 @@ const MyBagScreen = () => {
             style={styles.couponInput}
             placeholder="Enter coupon code"
             onChangeText={handleCouponCodeChange}
-            value={couponCode}
+            value={couponCode} // Sử dụng giá trị từ state thay vì selectedCouponCode
             editable={true}
-            onFocus={() => setShowCouponOptions(true)} // Hiển thị danh sách khi tương tác với TextInput
-            onBlur={() => setShowCouponOptions(false)} // Ẩn danh sách khi mất focus khỏi TextInput
-            onSubmitEditing={handleApplyCouponFromInput}
+            onSubmitEditing={handleApplyCouponFromInput} // Xử lý khi người dùng nhấn nút "Apply" trên bàn phím
           />
           <TouchableOpacity
             style={[
@@ -171,31 +180,26 @@ const MyBagScreen = () => {
               (isCouponApplied && styles.disabledButton) ||
                 (!isCouponApplied && styles.activeButton),
             ]}
-            onPress={() => handleApplyCouponFromInput()}>
+            onPress={isCouponApplied ? handleCancelCoupon : handleApplyCoupon}>
             <Text style={styles.applyButtonText}>
               {isCouponApplied ? 'Cancel' : 'Apply'}
             </Text>
           </TouchableOpacity>
         </View>
-        {showCouponOptions && (
-          <View style={styles.couponListContainer}>
-            {couponList.map((coupon, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  defaultCouponItem,
-                  selectedCoupon === coupon.code
-                    ? styles.selectedCouponItem
-                    : null,
-                ]}
-                onPress={() => handleApplyCouponFromList(coupon.code)}>
-                <Text style={styles.couponCode}>{coupon.code}</Text>
-                <Text style={styles.couponDiscount}>-{coupon.discount}%</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
+        <View style={styles.couponListContainer}>
+          {couponList.map((coupon, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.couponItem,
+                selectedCoupon === coupon.code && styles.selectedCouponItem,
+              ]}
+              onPress={() => handleSelectCoupon(coupon.code)}>
+              <Text style={styles.couponCode}>{coupon.code}</Text>
+              <Text style={styles.couponDiscount}>-{coupon.discount}%</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
         <View style={styles.totalPriceContainer}>
           <Text style={styles.totalPriceText}>
             Total Price: ${totalPrice}{' '}
@@ -212,11 +216,6 @@ const MyBagScreen = () => {
   );
 };
 
-const defaultCouponItem = {
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingVertical: 8,
-};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -331,27 +330,6 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: '#D3D3D3',
-  },
-  defaultCouponItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  couponOptionsContainer: {
-    backgroundColor: '#FFF',
-    position: 'absolute',
-    top: 60, // Thay đổi khoảng cách từ TextInput đến danh sách tùy theo layout
-    left: 16,
-    width: '90%',
-    borderRadius: 8,
-    elevation: 5, // Hiệu ứng shadow
-    zIndex: 1000, // Đảm bảo danh sách coupon hiển thị trên các thành phần khác
-  },
-  couponOption: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
   },
 });
 

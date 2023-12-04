@@ -110,7 +110,9 @@ function App() {
   return (
     <CartProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="HomeScreen">
+        <Stack.Navigator
+          // initialRouteName="MainTabs"
+          initialRouteName="MainTabs">
           <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}

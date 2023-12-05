@@ -464,8 +464,8 @@ const styles = StyleSheet.create({
   optionBarStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '138px',
-    height: '40px',
+    width: 138,
+    height: 40,
     paddingVertical: 10,
   },
   addToCartButtonStyle: {

@@ -9,7 +9,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import Mapbox from '@rnmapbox/maps';
 import Geolocation from '@react-native-community/geolocation';
-
+Mapbox.setWellKnownTileServer('Mapbox');
 Mapbox.setAccessToken(
   'sk.eyJ1Ijoia3ZqcDIwMDEiLCJhIjoiY2xwa3p3bjB4MDF2bTJzbXFsbngwbGwyZCJ9.6Z1iRMXeuWcX4Gp1q-Ibbw',
 );

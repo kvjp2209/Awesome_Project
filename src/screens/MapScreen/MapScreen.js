@@ -19,25 +19,30 @@ const MapScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [startCoordinate, setStartCoordinate] = useState(null);
   const [endCoordinate, setEndCoordinate] = useState(null);
+  const [directions, setDirections] = useState(null);
 
   useEffect(() => {
-    const requestLocationPermission = () => {
-      Geolocation.requestAuthorization();
-      Geolocation.getCurrentPosition(
-        position => {
-          const {latitude, longitude} = position.coords;
-          setCurrentLocation([longitude, latitude]);
-          setStartCoordinate([longitude, latitude]);
-        },
-        error => {
-          console.error('Error getting current location:', error);
-        },
-        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-      );
-    };
+    if (startCoordinate && endCoordinate) {
+      const getDirections = async () => {
+        const mapboxToken =
+          'sk.eyJ1Ijoia3ZqcDIwMDEiLCJhIjoiY2xwa3p3bjB4MDF2bTJzbXFsbngwbGwyZCJ9.6Z1iRMXeuWcX4Gp1q-Ibbw';
+        const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${startCoordinate[0]},${startCoordinate[1]};${endCoordinate[0]},${endCoordinate[1]}?geometries=geojson&access_token=${mapboxToken}`;
 
-    requestLocationPermission();
-  }, []);
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          if (data.routes && data.routes.length > 0) {
+            const route = data.routes[0].geometry.coordinates;
+            setDirections(route);
+          }
+        } catch (error) {
+          console.error('Error fetching directions:', error);
+        }
+      };
+
+      getDirections();
+    }
+  }, [startCoordinate, endCoordinate]);
 
   const handleMapClick = event => {
     const {geometry} = event;
@@ -63,23 +68,31 @@ const MapScreen = () => {
 
   return (
     <View style={styles.page}>
-      <Mapbox.MapView style={styles.map} onPress={handleMapClick}>
+      <Mapbox.MapView
+        style={styles.map}
+        onPress={handleMapClick}
+        zoomEnabled="true">
         <Mapbox.Camera zoomLevel={14} centerCoordinate={currentLocation} />
-        {currentLocation && startCoordinate && (
-          <Mapbox.PointAnnotation id="start" coordinate={startCoordinate}>
-            <View
-              style={[styles.annotationContainer, {backgroundColor: 'red'}]}>
-              <View style={styles.annotationFill} />
-            </View>
-          </Mapbox.PointAnnotation>
-        )}
-        {currentLocation && endCoordinate && (
-          <Mapbox.PointAnnotation id="end" coordinate={endCoordinate}>
-            <View
-              style={[styles.annotationContainer, {backgroundColor: 'green'}]}>
-              <View style={styles.annotationFill} />
-            </View>
-          </Mapbox.PointAnnotation>
+        <Mapbox.PointAnnotation id="start" coordinate={startCoordinate}>
+          <View style={[styles.annotationContainer, {backgroundColor: 'red'}]}>
+            <View style={styles.annotationFill} />
+          </View>
+        </Mapbox.PointAnnotation>
+        <Mapbox.PointAnnotation id="end" coordinate={endCoordinate}>
+          <View
+            style={[styles.annotationContainer, {backgroundColor: 'green'}]}>
+            <View style={styles.annotationFill} />
+          </View>
+        </Mapbox.PointAnnotation>
+        {directions && (
+          <Mapbox.ShapeSource
+            id="routeSource"
+            shape={{type: 'LineString', coordinates: directions}}>
+            <Mapbox.LineLayer
+              id="routeFill"
+              style={{lineColor: 'blue', lineWidth: 3}}
+            />
+          </Mapbox.ShapeSource>
         )}
       </Mapbox.MapView>
 

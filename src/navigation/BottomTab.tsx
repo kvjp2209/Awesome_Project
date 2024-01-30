@@ -3,6 +3,7 @@ import React, {memo} from 'react';
 //libs
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 //utils
 import colors from '../utils/colors';
@@ -33,7 +34,6 @@ const BottomTab = () => {
         tabBarActiveTintColor: colors.white[500],
         tabBarStyle: {
           backgroundColor: colors.ink[500],
-          paddingBottom: 4,
         },
         tabBarLabelStyle: {
           textTransform: 'capitalize',

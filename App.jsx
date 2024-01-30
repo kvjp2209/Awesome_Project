@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useLayoutEffect} from 'react';
 
 //components
 import RootStack from './src/navigation/StackNavigator/RootStack';
@@ -6,10 +6,15 @@ import RootStack from './src/navigation/StackNavigator/RootStack';
 //libs
 import {enableFreeze} from 'react-native-screens';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import SetupAPI from './src/api/api.config';
 
 enableFreeze(true);
 
 let App = () => {
+  //setup axios
+  useLayoutEffect(() => {
+    SetupAPI.init();
+  }, []);
   return (
     <SafeAreaProvider>
       <RootStack />

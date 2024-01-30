@@ -1,0 +1,7 @@
+export const ROUTES = {
+  BOTTOM_TAB: 'BOTTOM_TAB',
+  HOME: 'HOME',
+  PROFILE: 'PROFILE',
+  CHAMPION: 'CHAMPION',
+  SETTING: 'SETTING',
+};

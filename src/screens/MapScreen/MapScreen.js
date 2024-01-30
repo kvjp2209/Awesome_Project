@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Mapbox from '@rnmapbox/maps';
 import Geolocation from '@react-native-community/geolocation';
 Mapbox.setAccessToken(
@@ -20,6 +20,37 @@ const MapScreen = () => {
   const [startCoordinate, setStartCoordinate] = useState(null);
   const [endCoordinate, setEndCoordinate] = useState(null);
   const [directions, setDirections] = useState(null);
+  const mapRef = useRef(null);
+
+  // Effect để lấy vị trí hiện tại khi mở màn hình
+  useEffect(() => {
+    const requestLocationPermission = () => {
+      Geolocation.requestAuthorization();
+      Geolocation.getCurrentPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          setCurrentLocation([longitude, latitude]);
+        },
+        error => {
+          console.error('Error getting current location:', error);
+        },
+        {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      );
+    };
+
+    requestLocationPermission();
+  }, []);
+
+  // Function để quay camera về vị trí hiện tại
+  const returnToCurrentLocation = () => {
+    if (currentLocation && mapRef.current) {
+      mapRef.current.setCamera({
+        centerCoordinate: currentLocation,
+        zoomLevel: 14, // Đặt zoom level tùy ý
+        animationDuration: 2000, // Đặt thời gian hoàn thành animation (milliseconds)
+      });
+    }
+  };
 
   useEffect(() => {
     if (startCoordinate && endCoordinate) {
@@ -71,8 +102,13 @@ const MapScreen = () => {
       <Mapbox.MapView
         style={styles.map}
         onPress={handleMapClick}
-        zoomEnabled="true">
-        <Mapbox.Camera zoomLevel={14} centerCoordinate={currentLocation} />
+        zoomEnabled="true"
+        ref={mapRef}>
+        <Mapbox.Camera
+          ref={ref => (mapRef.current = ref)}
+          zoomLevel={14}
+          centerCoordinate={currentLocation}
+        />
         <Mapbox.PointAnnotation id="start" coordinate={startCoordinate}>
           <View style={[styles.annotationContainer, {backgroundColor: 'red'}]}>
             <View style={styles.annotationFill} />
@@ -95,7 +131,11 @@ const MapScreen = () => {
           </Mapbox.ShapeSource>
         )}
       </Mapbox.MapView>
-
+      <TouchableOpacity
+        style={styles.returnButton}
+        onPress={returnToCurrentLocation}>
+        <Text>Return</Text>
+      </TouchableOpacity>
       <Modal
         animationType="slide"
         transparent={true}
@@ -170,6 +210,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 10,
     backgroundColor: 'lightblue',
+    borderRadius: 5,
+  },
+  returnButton: {
+    position: 'absolute',
+    top: 20, // Cách trên cùng 20px
+    right: 20,
+    backgroundColor: '#ABB4BD',
+    padding: 10,
     borderRadius: 5,
   },
 });

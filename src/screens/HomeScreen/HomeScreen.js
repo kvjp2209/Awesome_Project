@@ -17,7 +17,7 @@ const saleClothesData = [
     price: 25,
     salePercent: 20,
     rating: 4.5,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const saleClothesData = [
     price: 50,
     salePercent: 30,
     rating: 4.2,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const saleClothesData = [
     price: 40,
     salePercent: 30,
     rating: 4.2,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
   },
 ];
 
@@ -49,7 +49,7 @@ function HomeScreen() {
     <ScrollView>
       <View>
         <Image
-          source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/Main.png')}
+          source={require('../../Asset/Images/HomeScreen/Main.png')}
           style={styles.bannerImageStyle}
         />
       </View>

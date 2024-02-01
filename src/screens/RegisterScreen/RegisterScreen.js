@@ -66,7 +66,7 @@ const RegisterScreen = props => {
           justifyContent: 'center',
         }}>
         <Image
-          source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/Success.png')}
+          source={require('../../Asset/Images/Success.png')}
           style={{
             height: 150,
             resizeMode: 'contain',

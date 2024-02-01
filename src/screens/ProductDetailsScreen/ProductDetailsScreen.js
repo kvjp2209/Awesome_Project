@@ -28,7 +28,7 @@ const saleClothesData = [
     price: 25,
     salePercent: 20,
     rating: 4.5,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const saleClothesData = [
     price: 50,
     salePercent: 30,
     rating: 4.2,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
   },
   {
     id: 3,
@@ -46,7 +46,7 @@ const saleClothesData = [
     price: 40,
     salePercent: 30,
     rating: 4.2,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
   },
 ];
 const productDetailsData = {
@@ -57,7 +57,7 @@ const productDetailsData = {
     price: 25,
     salePercent: 20,
     rating: 4.5,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
     description:
       'Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.',
   },
@@ -68,7 +68,7 @@ const productDetailsData = {
     price: 50,
     salePercent: 30,
     rating: 4.2,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
     description:
       'Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.',
   },
@@ -79,7 +79,7 @@ const productDetailsData = {
     price: 40,
     salePercent: 30,
     rating: 4.2,
-    image: require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/HomeScreen/product_1.png'),
+    image: require('../../Asset/Images/HomeScreen/product_1.png'),
     description:
       'Short dress in soft cotton jersey with decorative buttons down the front and a wide, frill-trimmed square neckline with concealed elastication. Elasticated seam under the bust and short puff sleeves with a small frill trim.',
   },
@@ -161,7 +161,7 @@ function ProductDetailsScreen({route}) {
       stars.push(
         <Image
           key={`star-${i}`}
-          source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/star.png')}
+          source={require('../../Asset/Images/star.png')}
           style={styles.starIcon}
         />,
       );
@@ -171,8 +171,8 @@ function ProductDetailsScreen({route}) {
     if (halfStars > 0) {
       stars.push(
         <Image
-          key={`star-half`}
-          source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/star.png')}
+          key={'star-half'}
+          source={require('../../Asset/Images/star.png')}
           style={styles.starIcon}
         />,
       );
@@ -183,7 +183,7 @@ function ProductDetailsScreen({route}) {
       stars.push(
         <Image
           key={`star-empty-${i}`}
-          source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/emptyStar.png')}
+          source={require('../../Asset/Images/emptyStar.png')}
           style={styles.starIcon}
         />,
       );
@@ -221,7 +221,7 @@ function ProductDetailsScreen({route}) {
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                source={require('/Users/nx-tech/Documents/WorkPlace/AwesomeProject/src/Asset/Images/love.png')}
+                source={require('../../Asset/Images/love.png')}
                 style={styles.loveButtonStyle}
               />
             </TouchableOpacity>

@@ -68,7 +68,7 @@ export default {
   orange: {
     400: '#EF7816',
   },
-  backgroundColor: '#F2F3F4',
+  backgroundColorLight: '#F2F3F4',
   //transparent
   overlay_min: 'rgba(0,0,0,0)',
   overlay_max: 'rgba(0,0,0,0.3)',
@@ -83,4 +83,6 @@ export default {
     100: '#fef3eb',
     50: '#fff9f5',
   },
+  backgroundColorDark: '#1C1C1C',
+  bottomTab: '#1E0C1B',
 };

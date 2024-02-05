@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const GET_ALL_HEROS = '/heroStats';
+const GET_ALL_CHAMPIONS = '/heroStats';
 
-const getHeroStats = () => {
-  return axios.get(GET_ALL_HEROS);
+const getChampionStats = () => {
+  return axios.get(GET_ALL_CHAMPIONS);
 };
 
 export const championApi = {
-  getHeroStats,
+  getChampionStats,
 };

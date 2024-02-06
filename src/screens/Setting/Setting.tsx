@@ -1,15 +1,23 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
 import {useDispatch, useSelector} from 'react-redux';
+
 import {RootState} from '../../stores/store';
-import {decrement, increment} from '../../features/counter/counterSlice';
+import {decrement, increment} from '../../stores/counter/counterSlice';
 
 const Setting = () => {
-  const count = useSelector((state: RootState) => state.counterReducer.value);
+  const count = useSelector((state: RootState) => state.counterSlice.value);
   const dispatch = useDispatch();
 
   return (
-    <View>
+    <SafeAreaView>
       <View>
         <Text>{count}</Text>
       </View>
@@ -23,7 +31,7 @@ const Setting = () => {
           <Text>Increment</Text>
         </View>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

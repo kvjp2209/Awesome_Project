@@ -1,12 +1,18 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {memo, useCallback} from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import FastImage from 'react-native-fast-image';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import colors from '../../utils/colors';
 
-import {championApi} from '../../api/champion/champion.api';
+import useChampionLogic from './Champion.logic';
 
 export type Champion = {
   localized_name: string;
@@ -30,43 +36,7 @@ const attributeTitle: Record<string, string> = {
 const width = Dimensions.get('window').width;
 
 const Champion = () => {
-  const [data, setData] = useState<ListChampion[]>([]);
-
-  const inset = useSafeAreaInsets();
-
-  //callback
-  const getData = useCallback(async () => {
-    try {
-      const response = await championApi.getChampionStats();
-
-      const dataArray = response.data || [];
-
-      let newData = convertData(dataArray);
-
-      setData(newData);
-    } catch (error) {
-      console.log('🐩 ~ file: Champion.tsx:18 ~ getData ~ error:', error);
-    }
-  }, [convertData]);
-
-  const convertData = useCallback((dataArray: Champion[]) => {
-    return dataArray.reduce((acc: ListChampion[], current: Champion) => {
-      let listChampWithPrimeAttr = acc.filter(
-        item => item.title === current.primary_attr,
-      );
-
-      if (listChampWithPrimeAttr.length) {
-        listChampWithPrimeAttr[0].data.push(current);
-        return acc;
-      }
-      const newItem: ListChampion = {
-        title: current.primary_attr,
-        data: [current],
-      };
-      acc.push(newItem);
-      return acc;
-    }, []);
-  }, []);
+  const {data, inset, isLoading} = useChampionLogic();
 
   const renderItem = useCallback((item: Champion, index: number) => {
     return (
@@ -104,17 +74,24 @@ const Champion = () => {
     });
   }, [data, renderItem]);
 
-  //side effect
-  useEffect(() => {
-    getData();
-  }, []);
-
   return (
     <ScrollView
       style={{
         paddingTop: inset.top,
         backgroundColor: colors.backgroundColorDark,
       }}>
+      {isLoading && (
+        <ActivityIndicator
+          size={20}
+          color={colors.white[500]}
+          style={[
+            {
+              paddingTop: inset.top,
+            },
+            styles.loading,
+          ]}
+        />
+      )}
       {renderListChamps()}
     </ScrollView>
   );
@@ -161,7 +138,6 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     color: colors.ink[100],
   },
-
   champImage: {
     width: '100%',
     height: 60,
@@ -169,6 +145,10 @@ const styles = StyleSheet.create({
   attrImage: {
     width: 30,
     height: 30,
+  },
+  loading: {
+    backgroundColor: colors.backgroundColorDark,
+    paddingTop: 50,
   },
 });
 

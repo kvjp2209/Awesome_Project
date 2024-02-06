@@ -7,6 +7,8 @@ import RootStack from './src/navigation/StackNavigator/RootStack';
 import {enableFreeze} from 'react-native-screens';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import SetupAPI from './src/api/api.config';
+import {Provider} from 'react-redux';
+import {store} from './src/stores/store';
 
 enableFreeze(true);
 
@@ -16,9 +18,11 @@ let App = () => {
     SetupAPI.init();
   }, []);
   return (
-    <SafeAreaProvider>
-      <RootStack />
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <RootStack />
+      </SafeAreaProvider>
+    </Provider>
   );
 };
 

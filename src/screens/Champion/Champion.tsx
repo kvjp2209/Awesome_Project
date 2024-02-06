@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
 
   champImage: {
     width: '100%',
-    height: 54,
+    height: 60,
   },
   attrImage: {
     width: 30,

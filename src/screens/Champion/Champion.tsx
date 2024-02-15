@@ -11,6 +11,7 @@ import {
 import FastImage from 'react-native-fast-image';
 
 import colors from '../../utils/colors';
+import {DOMAIN_ROOT} from '../../constants/common';
 
 import useChampionLogic from './Champion.logic';
 
@@ -36,7 +37,7 @@ const attributeTitle: Record<string, string> = {
 const width = Dimensions.get('window').width;
 
 const Champion = () => {
-  const {data, inset, isLoading} = useChampionLogic();
+  const {championListConverted, inset, isLoading} = useChampionLogic();
 
   const renderItem = useCallback((item: Champion, index: number) => {
     return (
@@ -44,7 +45,7 @@ const Champion = () => {
         <FastImage
           style={styles.champImage}
           source={{
-            uri: 'https://cdn.dota2.com' + item.img,
+            uri: DOMAIN_ROOT + item.img,
           }}
           resizeMode="stretch"
         />
@@ -58,7 +59,7 @@ const Champion = () => {
   }, []);
 
   const renderListChamps = useCallback(() => {
-    return data.map((item: ListChampion) => {
+    return championListConverted.map((item: ListChampion) => {
       return (
         <View key={item.title}>
           <View style={styles.attrTitleContainer}>
@@ -72,7 +73,7 @@ const Champion = () => {
         </View>
       );
     });
-  }, [data, renderItem]);
+  }, [championListConverted, renderItem]);
 
   return (
     <ScrollView

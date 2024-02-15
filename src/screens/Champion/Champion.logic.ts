@@ -1,24 +1,28 @@
-import {useCallback, useEffect} from 'react';
-import {useIsFocused} from '@react-navigation/native';
+import React, {useCallback} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import {RootState} from '../../stores/store';
-import {setIsLoading, setData} from '../../stores/champion/championSlice';
+import {setListChampionData} from '../../stores/champion/champion.slice';
+import {
+  selectChampionListOriginal,
+  selectChampionListConverted,
+  selectChampionLoading,
+} from '../../stores/champion/champion.selector';
+import {getChampionStats} from '../../stores/champion/champion.thunk';
 
-import {championApi} from '../../api/champion/champion.api';
+import useDispatch from '../../hooks/useDispatch';
 
 const useChampionLogic = () => {
   //hooks
-  const data = useSelector((state: RootState) => state.championSlice.data);
-
-  const isLoading = useSelector(
-    (state: RootState) => state.championSlice.isLoading,
-  );
-  const isFocused = useIsFocused();
-
   const dispatch = useDispatch();
+
+  const data = useSelector(selectChampionListOriginal);
+
+  const isLoading = useSelector(selectChampionLoading);
+
+  const championListConverted = useSelector(selectChampionListConverted);
 
   const inset = useSafeAreaInsets();
 
@@ -43,34 +47,25 @@ const useChampionLogic = () => {
   }, []);
 
   const getData = useCallback(async () => {
-    try {
-      dispatch(setIsLoading(true));
-      const response = await championApi.getChampionStats();
-      dispatch(setIsLoading(false));
-      const dataArray = response.data || [];
+    dispatch(getChampionStats(null));
 
-      let newData = convertData(dataArray);
-
-      dispatch(setData(newData));
-    } catch (error) {
-      console.log('🐩 ~ file: Champion.tsx:18 ~ getData ~ error:', error);
-    }
-  }, [convertData, dispatch]);
-  //
+    let newData = convertData(data);
+    dispatch(setListChampionData(newData));
+  }, [convertData, data, dispatch]);
 
   //side effect
-  useEffect(() => {
-    if (isFocused) {
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(setListChampionData([]));
       getData();
-    } else {
-      dispatch(setData([]));
-    }
-  }, [isFocused]);
+    }, []),
+  );
 
   return {
     data,
     inset,
     isLoading,
+    championListConverted,
   };
 };
 

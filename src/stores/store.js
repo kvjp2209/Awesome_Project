@@ -1,11 +1,15 @@
-import {configureStore} from '@reduxjs/toolkit';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import counterSlice from './counter/counterSlice';
-import championSlice from './champion/championSlice';
+import championSlice from './champion/champion.slice';
+
+const rootReducer = combineReducers({
+  champion: championSlice,
+  counter: counterSlice,
+});
 
 export const store = configureStore({
   reducer: {
-    counterSlice,
-    championSlice,
+    rootReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

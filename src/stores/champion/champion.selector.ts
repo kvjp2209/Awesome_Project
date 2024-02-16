@@ -1,7 +1,8 @@
 import {createDraftSafeSelector} from '@reduxjs/toolkit';
 import {RootState} from '../store';
 
-const selectChampionReducer = (state: RootState) => state.rootReducer.champion;
+const selectChampionReducer = (state: RootState) =>
+  state.persistedReducer.champion;
 
 const selectChampionListConverted = createDraftSafeSelector(
   selectChampionReducer,

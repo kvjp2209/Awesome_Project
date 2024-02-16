@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -14,7 +8,7 @@ import {decrement, increment} from '../../stores/counter/counterSlice';
 
 const Setting = () => {
   const count = useSelector(
-    (state: RootState) => state.rootReducer.counter.value,
+    (state: RootState) => state.persistedReducer.counter.value,
   );
   const dispatch = useDispatch();
 

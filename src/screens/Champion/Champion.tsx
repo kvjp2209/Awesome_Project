@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform,
 } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
@@ -93,7 +94,7 @@ const Champion = () => {
           ]}
         />
       )}
-      {renderListChamps()}
+      <View style={styles.renderListChamps}>{renderListChamps()}</View>
     </ScrollView>
   );
 };
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  renderListChamps: {paddingBottom: Platform.OS === 'ios' ? 60 : 0},
   nameChampion: {
     position: 'absolute',
     backgroundColor: colors.overlay_medium,

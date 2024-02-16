@@ -1,15 +1,30 @@
+import {persistReducer} from 'redux-persist';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
+
 import counterSlice from './counter/counterSlice';
 import championSlice from './champion/champion.slice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//=============PERSIST-CONFIG=================//
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['champion'],
+};
+//=============================================//
 
 const rootReducer = combineReducers({
   champion: championSlice,
   counter: counterSlice,
 });
 
+//=============PERSIST-REDUCER=================//
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+//=============================================//
+
 export const store = configureStore({
   reducer: {
-    rootReducer,
+    persistedReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

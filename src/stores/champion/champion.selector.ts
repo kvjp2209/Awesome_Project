@@ -4,8 +4,25 @@ import {RootState} from '../store';
 const selectChampionReducer = (state: RootState) => state.rootReducer.champion;
 
 const selectChampionListConverted = createDraftSafeSelector(
-  [selectChampionReducer],
-  champion => champion.championListConverted,
+  selectChampionReducer,
+  champion => {
+    return champion.championListOriginal.reduce((acc: any[], current: any) => {
+      let listChampWithPrimeAttr = acc.filter(
+        item => item.title === current.primary_attr,
+      );
+
+      if (listChampWithPrimeAttr.length) {
+        listChampWithPrimeAttr[0].data.push(current);
+        return acc;
+      }
+      const newItem: any = {
+        title: current.primary_attr,
+        data: [current],
+      };
+      acc.push(newItem);
+      return acc;
+    }, []);
+  },
 );
 
 const selectChampionLoading = createDraftSafeSelector(

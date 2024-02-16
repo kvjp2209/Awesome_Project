@@ -26,32 +26,9 @@ const useChampionLogic = () => {
 
   const inset = useSafeAreaInsets();
 
-  //callback
-  const convertData = useCallback((dataArray: any[]) => {
-    return dataArray.reduce((acc: any[], current: any) => {
-      let listChampWithPrimeAttr = acc.filter(
-        item => item.title === current.primary_attr,
-      );
-
-      if (listChampWithPrimeAttr.length) {
-        listChampWithPrimeAttr[0].data.push(current);
-        return acc;
-      }
-      const newItem: any = {
-        title: current.primary_attr,
-        data: [current],
-      };
-      acc.push(newItem);
-      return acc;
-    }, []);
-  }, []);
-
   const getData = useCallback(async () => {
     dispatch(getChampionStats(null));
-
-    let newData = convertData(data);
-    dispatch(setListChampionData(newData));
-  }, [convertData, data, dispatch]);
+  }, [dispatch]);
 
   //side effect
   useFocusEffect(

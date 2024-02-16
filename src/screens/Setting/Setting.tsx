@@ -13,7 +13,9 @@ import {RootState} from '../../stores/store';
 import {decrement, increment} from '../../stores/counter/counterSlice';
 
 const Setting = () => {
-  const count = useSelector((state: RootState) => state.counterSlice.value);
+  const count = useSelector(
+    (state: RootState) => state.rootReducer.counter.value,
+  );
   const dispatch = useDispatch();
 
   return (
@@ -36,5 +38,3 @@ const Setting = () => {
 };
 
 export default Setting;
-
-const styles = StyleSheet.create({});

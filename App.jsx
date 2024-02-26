@@ -17,6 +17,7 @@ let App = () => {
   useLayoutEffect(() => {
     SetupAPI.init();
   }, []);
+
   return (
     <Provider store={store}>
       <SafeAreaProvider>

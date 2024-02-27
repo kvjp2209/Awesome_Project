@@ -3,7 +3,7 @@ import type {PayloadAction} from '@reduxjs/toolkit';
 
 import {getChampionStats} from './champion.thunk';
 
-import {ListChampion} from '../../screens/Champion/Champion.type';
+import {ListChampion} from '@screens/Champion/Champion.type';
 
 export type StateType = {
   championListOriginal: any[];

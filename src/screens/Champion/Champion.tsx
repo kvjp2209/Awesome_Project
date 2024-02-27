@@ -10,14 +10,16 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
+//libs
 import FastImage from 'react-native-fast-image';
 
-import colors from '../../utils/colors';
-import {DOMAIN_ROOT} from '../../constants/common';
+//utils, commons,...
+import colors from '@utils/colors';
+import {ROUTES} from '@constant/routes';
+import {DOMAIN_ROOT} from '@constant/common';
+import {navigateTo} from '@navigation/actions';
 
-import {ROUTES} from '../../constants/routes';
-import {navigateTo} from '../../navigation/actions';
-
+//components
 import useChampionLogic from './Champion.logic';
 import {ChampionType, ListChampion} from './Champion.type';
 
@@ -35,10 +37,6 @@ const Champion = () => {
 
   // callback
   const navigateToChampionDetail = useCallback((champion: ChampionType) => {
-    console.log(
-      '🐩 ~ file: Champion.tsx:38 ~ navigateToChampionDetail ~ champion:',
-      champion,
-    );
     navigateTo(ROUTES.CHAMPION_DETAIL, {champion: champion});
   }, []);
 

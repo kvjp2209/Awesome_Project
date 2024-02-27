@@ -5,7 +5,7 @@ import {SafeAreaView, StyleSheet, Text, View, Dimensions} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 //utils
-import colors from '../../utils/colors';
+import colors from '@utils/colors';
 
 const Home = () => {
   return (

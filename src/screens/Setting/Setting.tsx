@@ -1,10 +1,12 @@
 import React from 'react';
 import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 
+//libs
 import {useDispatch, useSelector} from 'react-redux';
 
-import {RootState} from '../../stores/store';
-import {decrement, increment} from '../../stores/counter/counterSlice';
+//stores
+import {RootState} from '@stores/store';
+import {decrement, increment} from '@stores/counter/counterSlice';
 
 const Setting = () => {
   const count = useSelector(

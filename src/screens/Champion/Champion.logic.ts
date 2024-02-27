@@ -1,18 +1,21 @@
 import React, {useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 
+//libs
 import {useSelector} from 'react-redux';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import {setListChampionData} from '../../stores/champion/champion.slice';
+//hooks
+import useDispatch from '@hooks/useDispatch';
+
+//stores
+import {setListChampionData} from '@stores/champion/champion.slice';
 import {
   selectChampionListOriginal,
   selectChampionListConverted,
   selectChampionLoading,
-} from '../../stores/champion/champion.selector';
-import {getChampionStats} from '../../stores/champion/champion.thunk';
-
-import useDispatch from '../../hooks/useDispatch';
+} from '@stores/champion/champion.selector';
+import {getChampionStats} from '@stores/champion/champion.thunk';
 
 const useChampionLogic = () => {
   //hooks

@@ -1,9 +1,14 @@
 import React, {memo} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 
-import {ChampionType} from '../Champion/Champion.type';
+//libs
 import FastImage from 'react-native-fast-image';
-import {DOMAIN_ROOT} from '../../constants/common';
+
+//commons
+import {DOMAIN_ROOT} from '@constant/common';
+
+//components
+import {ChampionType} from '@screens/Champion/Champion.type';
 
 interface PropTypes {
   route: {
@@ -17,10 +22,6 @@ const width = Dimensions.get('window').width;
 
 const ChampionDetail = ({route}: PropTypes) => {
   const {champion} = route.params;
-  console.log(
-    '🐩 ~ file: ChampionDetail.tsx:20 ~ ChampionDetail ~ champion:',
-    DOMAIN_ROOT + champion.img,
-  );
 
   return (
     <View style={styles.container}>

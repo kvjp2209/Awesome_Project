@@ -1,5 +1,6 @@
+import {RootState} from '@stores/store';
+
 import {createDraftSafeSelector} from '@reduxjs/toolkit';
-import {RootState} from '../store';
 
 const selectChampionReducer = (state: RootState) =>
   state.persistedReducer.champion;

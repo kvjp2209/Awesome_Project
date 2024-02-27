@@ -1,5 +1,6 @@
 import {create} from 'zustand';
-import {championApi} from '../../api/champion/champion.api';
+
+import {championApi} from '@api/champion/champion.api';
 
 const championStore = create((get, set) => ({
   championListOriginal: [],

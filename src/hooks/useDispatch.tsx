@@ -1,6 +1,10 @@
 import {useCallback, useEffect, useRef} from 'react';
+
+//libs
 import {useDispatch as useRDDispatch} from 'react-redux';
-import {AppDispatch} from '../stores/store';
+
+//stores
+import {AppDispatch} from '@stores/store';
 
 const useDispatch = (): AppDispatch => {
   const signalRef = useRef<any[]>([]);

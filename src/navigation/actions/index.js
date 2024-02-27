@@ -1,6 +1,6 @@
 // import { DrawerActions } from '@react-navigation/native';
 
-import {isNavigationReady, navigationRef} from '../Navigation.ref';
+import {isNavigationReady, navigationRef} from '@navigation/Navigation.ref';
 
 export function navigateTo(name, params) {
   if (isNavigationReady() && navigationRef.current) {

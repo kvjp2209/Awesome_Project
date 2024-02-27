@@ -5,14 +5,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 //utils, constants,...
-import {ROUTES} from '../../constants/routes';
+import {ROUTES} from '@constant/routes';
 
 //hook
-import {navigationRef, setReady} from '../Navigation.ref';
+import {navigationRef, setReady} from '@navigation/Navigation.ref';
 
 //components
-import BottomTab from '../BottomTab';
-import ChampionDetail from '../../screens/ChampionDetail/ChampionDetail';
+import BottomTab from '@navigation/BottomTab';
+import ChampionDetail from '@screens/ChampionDetail';
 
 const Stack = createNativeStackNavigator();
 

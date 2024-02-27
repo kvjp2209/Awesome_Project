@@ -5,14 +5,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //utils
-import colors from '../utils/colors';
-import {ROUTES} from '../constants/routes';
+import colors from '@utils/colors';
+import {ROUTES} from '@constant/routes';
 
 //components
-import Home from '../screens/Home';
-import Setting from '../screens/Setting';
-import Profile from '../screens/Profile';
-import Champion from '../screens/Champion';
+import Home from '@screens/Home';
+import Setting from '@screens/Setting';
+import Profile from '@screens/Profile';
+import Champion from '@screens/Champion';
 
 const Tab = createBottomTabNavigator();
 

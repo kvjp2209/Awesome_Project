@@ -1,5 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {championApi} from '../../api/champion/champion.api';
+
+import {championApi} from '@api/champion/champion.api';
 
 export const getChampionStats = createAsyncThunk(
   'champion/get/champs',

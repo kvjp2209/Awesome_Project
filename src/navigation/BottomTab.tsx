@@ -37,7 +37,8 @@ const BottomTab = () => {
         tabBarLabelStyle: {
           textTransform: 'capitalize',
         },
-      }}>
+      }}
+      initialRouteName={ROUTES.CHAMPION}>
       <Tab.Screen
         options={{
           headerShown: false,

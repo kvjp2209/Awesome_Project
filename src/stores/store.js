@@ -1,4 +1,4 @@
-import {persistReducer} from 'redux-persist';
+import {persistReducer, persistStore} from 'redux-persist';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 
 import counterSlice from './counter/counterSlice';
@@ -31,6 +31,8 @@ export const store = configureStore({
       serializableCheck: false,
     }),
 });
+
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

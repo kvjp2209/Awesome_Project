@@ -7,6 +7,7 @@ import {
   Text,
   View,
   Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
@@ -14,19 +15,11 @@ import FastImage from 'react-native-fast-image';
 import colors from '../../utils/colors';
 import {DOMAIN_ROOT} from '../../constants/common';
 
+import {ROUTES} from '../../constants/routes';
+import {navigateTo} from '../../navigation/actions';
+
 import useChampionLogic from './Champion.logic';
-
-export type Champion = {
-  localized_name: string;
-  img: string;
-  primary_attr: string;
-  name: string;
-};
-
-export type ListChampion = {
-  title: string;
-  data: Champion[];
-};
+import {ChampionType, ListChampion} from './Champion.type';
 
 const attributeTitle: Record<string, string> = {
   str: 'Strength',
@@ -40,22 +33,35 @@ const width = Dimensions.get('window').width;
 const Champion = () => {
   const {championListConverted, inset, isLoading} = useChampionLogic();
 
-  const renderItem = useCallback((item: Champion, index: number) => {
+  // callback
+  const navigateToChampionDetail = useCallback((champion: ChampionType) => {
+    console.log(
+      '🐩 ~ file: Champion.tsx:38 ~ navigateToChampionDetail ~ champion:',
+      champion,
+    );
+    navigateTo(ROUTES.CHAMPION_DETAIL, {champion: champion});
+  }, []);
+
+  const renderItem = useCallback((item: ChampionType, index: number) => {
     return (
-      <View style={styles.itemContainer} key={item.localized_name + index}>
-        <FastImage
-          style={styles.champImage}
-          source={{
-            uri: DOMAIN_ROOT + item.img,
-          }}
-          resizeMode="stretch"
-        />
-        <View style={styles.nameChampion}>
-          <Text numberOfLines={1} style={styles.nameChampionTxt}>
-            {item.localized_name}
-          </Text>
+      <TouchableWithoutFeedback
+        onPress={() => navigateToChampionDetail(item)}
+        key={item.localized_name + index}>
+        <View style={styles.itemContainer}>
+          <FastImage
+            style={styles.champImage}
+            source={{
+              uri: DOMAIN_ROOT + item.img,
+            }}
+            resizeMode="stretch"
+          />
+          <View style={styles.nameChampion}>
+            <Text numberOfLines={1} style={styles.nameChampionTxt}>
+              {item.localized_name}
+            </Text>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }, []);
 
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  renderListChamps: {paddingBottom: Platform.OS === 'ios' ? 60 : 0},
+  renderListChamps: {paddingBottom: Platform.OS === 'ios' ? 50 : 0},
   nameChampion: {
     position: 'absolute',
     backgroundColor: colors.overlay_medium,

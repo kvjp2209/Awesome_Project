@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -12,6 +12,8 @@ import {
 
 //libs
 import FastImage from 'react-native-fast-image';
+import messaging from '@react-native-firebase/messaging';
+import notifee, {TimestampTrigger, TriggerType} from '@notifee/react-native';
 
 //utils, commons,...
 import colors from '@utils/colors';
@@ -36,7 +38,70 @@ const Champion = () => {
   const {championListConverted, inset, isLoading} = useChampionLogic();
 
   // callback
+  const onDisplayNotification = async (remoteMessage: any) => {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: remoteMessage.notification.title,
+      body: remoteMessage.notification.body,
+      android: {
+        channelId,
+        smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  };
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log(
+        '🐩 ~ file: Champion.tsx:68 ~ unsubscribe ~ remoteMessage:',
+        remoteMessage,
+      );
+      onDisplayNotification(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  async function onCreateTriggerNotification() {
+    const date = new Date(Date.now());
+    date.setHours(1);
+    date.setMinutes(40);
+
+    // Create a time-based trigger
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: date.getTime(), // fire at 11:10am (10 minutes before meeting)
+    };
+
+    // Create a trigger notification
+    await notifee.createTriggerNotification(
+      {
+        title: 'Meeting with Jane',
+        body: 'Today at 11:20am',
+        android: {
+          channelId: 'your-channel-id',
+        },
+      },
+      trigger,
+    );
+  }
+
   const navigateToChampionDetail = useCallback((champion: ChampionType) => {
+    onDisplayNotification();
+    onCreateTriggerNotification();
     navigateTo(ROUTES.CHAMPION_DETAIL, {champion: champion});
   }, []);
 

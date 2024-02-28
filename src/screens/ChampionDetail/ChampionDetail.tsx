@@ -9,6 +9,8 @@ import {DOMAIN_ROOT} from '@constant/common';
 
 //components
 import {ChampionType} from '@screens/Champion/Champion.type';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {RootStackParamList} from '@navigation/StackNavigator/RootStack';
 
 interface PropTypes {
   route: {
@@ -18,10 +20,15 @@ interface PropTypes {
   };
 }
 
+export type ChampionDetailRouteProp = RouteProp<
+  RootStackParamList,
+  'CHAMPION_DETAIL'
+>;
+
 const width = Dimensions.get('window').width;
 
-const ChampionDetail = ({route}: PropTypes) => {
-  const {champion} = route.params;
+const ChampionDetail = () => {
+  const champion = useRoute<ChampionDetailRouteProp>().params.champion;
 
   return (
     <View style={styles.container}>
